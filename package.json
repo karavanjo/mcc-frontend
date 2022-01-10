@@ -1,0 +1,41 @@
+{
+  "name": "mcc-frontend",
+  "version": "0.0.1",
+  "description": "Frontend for web application 'My city climate'",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ol": "^6.11.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.2.1",
+    "realm-web": "^1.5.1"
+  },
+  "devDependencies": {
+    "@types/ol": "^6.5.3",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@vitejs/plugin-react": "^1.0.7",
+    "sass": "^1.47.0",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karavanjo/mcc-frontend.git"
+  },
+  "keywords": [
+    "climate",
+    "poland"
+  ],
+  "author": "Ivan Kavaliou <info@ikovalev.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/karavanjo/mcc-frontend/issues"
+  },
+  "homepage": "https://github.com/karavanjo/mcc-frontend#readme"
+}

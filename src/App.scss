@@ -1,0 +1,22 @@
+.app {
+  width: 100%;
+  height: 100%;
+
+  .logo {
+    position: absolute;
+    z-index: 9999;
+    right: 1vh;
+    bottom: 1vh;
+
+    background-color: white;
+    padding: .5vh;
+
+    -webkit-box-shadow: 0 0 14px 0 rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 0 0 14px 0 rgba(34, 60, 80, 0.2);
+    box-shadow: 0 0 14px 0 rgba(34, 60, 80, 0.2);
+
+    img {
+      height: 5vmin;
+    }
+  }
+}
