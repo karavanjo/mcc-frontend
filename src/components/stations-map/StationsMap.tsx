@@ -1,40 +1,71 @@
 import React from 'react';
-import OlMap from '../ol-map';
-import { FeatureStation, Station } from '../../model/station';
-import { Feature } from 'ol';
-import { Geometry, Point } from 'ol/geom';
-import { transform } from 'ol/proj';
+import Map from 'ol/Map'
+
+import { Station } from '../../model/station';
 import { getStationStyle } from '../../utils/getStationStyle';
+import { stationsToFeatures } from '../../utils/stationsToFeatures';
+
+import OlMap from '../ol-map';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
 
 interface StationsMapProps {
   stations: Station[]
 }
 
-function StationsMap(props: StationsMapProps) {
-  const { stations } = props
-  const features: FeatureStation[] = []
+class StationsMap extends React.Component<StationsMapProps> {
+  map: Map | undefined
+  stationsLayer: VectorLayer<any> | undefined
 
-  if (stations && stations.length > 0) {
-    stations.forEach(s => {
-      const feature = new Feature<Geometry>({
-        geometry: new Point(transform(s.location.coordinates,
-          'EPSG:4326', 'EPSG:3857')),
-        name: s.name
-      }) as FeatureStation
-
-      feature.type  = s.type
-
-      feature.setProperties({
-        code: s.code,
-        name: s.name,
-        type: s.type
-      });
-
-      features.push(feature)
-    });
+  constructor(props: StationsMapProps) {
+    super(props);
   }
 
-  return <OlMap features={features} getStyle={getStationStyle}/>
+  componentDidUpdate(prevProps: StationsMapProps) {
+    if (prevProps.stations !== this.props.stations && !this.stationsLayer && this.map) {
+      this.buildStationsLayer();
+    }
+  }
+
+  buildStationsLayer = () => {
+    if (!this.map) {
+      return;
+    }
+
+    const map = this.map;
+    const features = stationsToFeatures(this.props.stations)
+
+    const stationsLayer = new VectorLayer({
+      source: new VectorSource({
+        features
+      }),
+      style: getStationStyle
+    })
+
+    map.addLayer(stationsLayer)
+
+    map.getView().fit(stationsLayer.getSource().getExtent(), {
+      padding: [50, 50, 50, 50]
+    })
+
+    map.on('pointermove', e => {
+      const pixel = map.getEventPixel(e.originalEvent)
+      const hit = map.hasFeatureAtPixel(pixel)
+      map.getViewport().style.cursor = hit ? 'pointer' : ''
+    })
+
+    this.stationsLayer = stationsLayer;
+  }
+
+  onMapCreate(map: Map) {
+    this.map = map;
+  }
+
+  render() {
+    return (
+      <OlMap onMapCreate={(map) => this.onMapCreate(map)}/>
+    );
+  }
 }
 
 export default StationsMap
