@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useRealmApp } from './providers/realm'
 import { useMongoDB } from './providers/mongodb'
+
+import { Station } from './model/station';
 import StationsMap from './components/stations-map/'
+import Logo from './components/logo';
 
 import './App.scss'
-import logo from './logo.svg'
-import { Station } from './model/station';
 
 function App() {
   const { anonymousIn, user } = useRealmApp()
@@ -38,19 +39,10 @@ function App() {
     }
   })
 
-  let content;
-  if (stations) {
-    content = <StationsMap stations={stations}/>
-  } else {
-    content = <span>loading</span>;
-  }
-
   return (
     <div className="app">
-      <div className="logo" title="My city's climate">
-        <img src={logo} alt="My city's climate"/>
-      </div>
-      {content}
+      <Logo/>
+      <StationsMap stations={stations}/>
     </div>
   )
 }
