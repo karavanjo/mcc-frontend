@@ -1,8 +1,8 @@
 import React from 'react';
 import OlMap from '../ol-map';
-import { Station } from '../../model/station';
+import { FeatureStation, Station } from '../../model/station';
 import { Feature } from 'ol';
-import { Point } from 'ol/geom';
+import { Geometry, Point } from 'ol/geom';
 import { transform } from 'ol/proj';
 import { getStationStyle } from '../../utils/getStationStyle';
 
@@ -12,15 +12,17 @@ interface StationsMapProps {
 
 function StationsMap(props: StationsMapProps) {
   const { stations } = props
-  const features: Feature<Point>[] = []
+  const features: FeatureStation[] = []
 
   if (stations && stations.length > 0) {
     stations.forEach(s => {
-      const feature = new Feature<Point>({
+      const feature = new Feature<Geometry>({
         geometry: new Point(transform(s.location.coordinates,
           'EPSG:4326', 'EPSG:3857')),
         name: s.name
-      })
+      }) as FeatureStation
+
+      feature.type  = s.type
 
       feature.setProperties({
         code: s.code,
@@ -32,7 +34,7 @@ function StationsMap(props: StationsMapProps) {
     });
   }
 
-  return <OlMap features={features}/>
+  return <OlMap features={features} getStyle={getStationStyle}/>
 }
 
 export default StationsMap
