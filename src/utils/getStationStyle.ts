@@ -8,7 +8,7 @@ import { Circle, Fill, Stroke, Style } from 'ol/style';
 const STYLES = {
   climate: new Style({
     image: new Circle({
-      radius: 5,
+      radius: 8,
       fill: new Fill({
         color: '#FC9292'
       }),
@@ -20,7 +20,7 @@ const STYLES = {
   }),
   perception: new Style({
     image: new Circle({
-      radius: 5,
+      radius: 3,
       fill: new Fill({
         color: '#c0ddff'
       }),

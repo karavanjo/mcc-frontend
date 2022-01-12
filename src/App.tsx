@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useRealmApp } from './providers/realm'
 import { useMongoDB } from './providers/mongodb'
 
-import { Station } from './model/station';
+import { FeatureStation, Station } from './model/station';
 import StationsMap from './components/stations-map/'
+import StationModal from './components/station-modal'
 import Logo from './components/logo';
 
 import './App.scss'
@@ -12,6 +13,7 @@ function App() {
   const { anonymousIn, user } = useRealmApp()
   const { db } = useMongoDB()
   const [stations, setStations] = useState<Station[]>([])
+  const [selectedStation, setSelectedStation] = useState<FeatureStation | null>(null)
 
   useEffect(() => {
     async function wrapStationsQuery() {
@@ -39,11 +41,29 @@ function App() {
     }
   })
 
+  const onClickFeatures = (features: FeatureStation[]) => {
+    if (features.length == 0) return
+    setSelectedStation(features[0])
+  }
+
+  const onClose = () => {
+    setSelectedStation(null)
+  }
+
   return (
-    <div className="app">
-      <Logo/>
-      <StationsMap stations={stations}/>
-    </div>
+    <Fragment>
+      <div className="app">
+        <Logo/>
+        <StationsMap
+          stations={stations}
+          onClickFeatures={(f) => onClickFeatures(f)}
+        />
+      </div>
+      <StationModal
+        station={selectedStation}
+        onClose={onClose}
+      />
+    </Fragment>
   )
 }
 
