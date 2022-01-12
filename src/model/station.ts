@@ -2,7 +2,7 @@ import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 
 export interface Station {
-  code: number
+  code: string
   name: string
   type: 'k' | 's' | 'pp'
   location: Point
@@ -14,7 +14,7 @@ export interface Point {
 }
 
 export interface StationFeatureAttrs {
-  code: number
+  code: string
   name: string
   type: 'k' | 's' | 'pp'
 }
