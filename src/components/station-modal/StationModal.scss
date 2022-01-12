@@ -25,5 +25,10 @@
     overflow-y: auto;
     border: 1px solid #bfbfbf;
     text-align: center;
+    padding: 10px;
+
+    svg {
+      display: inline-block !important;
+    }
   }
 }

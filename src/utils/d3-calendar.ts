@@ -5,7 +5,7 @@ import * as d3 from 'd3'
 // Copyright 2021 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/calendar-view
-export default function Calendar<T>(data: T[], {
+export default function D3Calendar<T>(data: T[], {
   x = ([x]) => x, // given d in data, returns the (temporal) x-value
   y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
   title, // given d in data, returns the title text
@@ -27,6 +27,7 @@ export default function Calendar<T>(data: T[], {
   const timeWeek = weekday === 'sunday' ? d3.utcSunday : d3.utcMonday;
   const weekDays = weekday === 'weekday' ? 5 : 7;
   const height = cellSize * (weekDays + 0.2);
+  width = cellSize * 58
 
   // Compute a color scale. This assumes a diverging color scheme where the pivot
   // is zero, and we want symmetric difference around zero.

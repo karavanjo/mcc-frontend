@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import Box from '@mui/material/Box'
-import Skeleton from '@mui/material/Skeleton'
+import { CircularProgress } from '@mui/material'
+
+import Legend from '../../utils/d3-legend'
 
 import { useMongoDB } from '../../providers/mongodb'
 
 import { FeatureStation } from '../../model/station'
 import { Observation } from '../../model/obervation'
 
-import Calendar from '../../utils/calendar'
+import D3Calendar from '../../utils/d3-calendar'
 
 import './StationGrid.css'
 
@@ -17,25 +19,30 @@ interface StationModalProps {
   className: string
 }
 
-const loading = <Box sx={{ width: '100%' }}>
-  <Skeleton/>
-  <Skeleton animation="wave"/>
-  <Skeleton animation={false}/>
+const loading = <Box sx={{ width: '100%', marginTop: '10%' }}>
+  <CircularProgress/>
 </Box>
 
 function StationGrid(props: StationModalProps) {
-  const { station, className } = props;
+  const { station, className } = props
   const [observations, setObservations] = useState<Observation[]>([])
+  const componentMounted = useRef(true)
   const { db } = useMongoDB()
 
   const svg = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    return () => {
+      componentMounted.current = false
+    }
+  }, [])
+
+  useEffect(() => {
     if (observations.length == 0) return
-    if (!svg || !svg.current ) return;
+    if (!svg || !svg.current) return
 
     // @ts-ignore
-    const svgCalendar = Calendar<Observation>(observations, {
+    const svgCalendar = D3Calendar<Observation>(observations, {
       // @ts-ignore
       x: d => d.ts,
       // @ts-ignore
@@ -44,10 +51,21 @@ function StationGrid(props: StationModalProps) {
       width: svg.current.clientWidth - 100
     })
 
+    // @ts-ignore
+    const legend: SVGSVGElement = Legend(svgCalendar.scales.color, {
+      title: 'Daily average temperature',
+      tickFormat: '.0f',
+    })
+
     if (svg.current) {
+      svg.current.appendChild(legend)
       svg.current.appendChild(svgCalendar)
     }
-  }, [observations]);
+
+    window.addEventListener('resize', function (e) {
+      console.log(e.detail)
+    })
+  }, [observations])
 
   useEffect(() => {
     async function wrapObservationsQuery() {
@@ -63,7 +81,7 @@ function StationGrid(props: StationModalProps) {
           sort: { 'ts': -1 }
         })
 
-        setObservations(observations)
+        if (componentMounted.current) setObservations(observations)
       }
     }
 

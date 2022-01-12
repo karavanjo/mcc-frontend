@@ -25,7 +25,7 @@ function StationModal(props: StationModalProps) {
     >
       <div className="station-modal">
         <div className="header">
-          <Typography variant="h3" component="h3">
+          <Typography variant="h6">
             {station.getProperties().name}
           </Typography>
           <Button onClick={handleClose} variant="outlined">Close</Button>
