@@ -28,7 +28,7 @@ function OlMap(props: OlMapProps) {
         projection: 'EPSG:3857',
         center: transform([19.105, 52.107], 'EPSG:4326', 'EPSG:3857'),
         zoom: 6,
-        extent: transformExtent([12.51284, 48.31270, 27.18045, 56.36571],
+        extent: transformExtent([11.51284, 46.31270, 28.18045, 58.36571],
           'EPSG:4326', 'EPSG:3857'),
       }),
       controls: defaultControls()

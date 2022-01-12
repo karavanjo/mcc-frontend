@@ -37,7 +37,7 @@ class StationsMap extends React.Component<StationsMapProps> {
     const map = this.map;
     const featuresSet: FeatureStationSet = stationsToFeatures(this.props.stations)
 
-    let k: keyof typeof featuresSet;  // Type is "one" | "two" | "three"
+    let k: keyof typeof featuresSet;
     for (k in featuresSet) {
       const features = featuresSet[k];
 
@@ -49,6 +49,12 @@ class StationsMap extends React.Component<StationsMapProps> {
       })
       stationsLayer.setZIndex(getLayerZIndex(k))
       map.addLayer(stationsLayer)
+
+      if (k == 'k') {
+        map.getView().fit(stationsLayer.getSource().getExtent(), {
+          padding: [50, 50, 50, 50]
+        })
+      }
     }
 
     this.stationsLayer = true
