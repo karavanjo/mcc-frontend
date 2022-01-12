@@ -1,10 +1,14 @@
 import { Feature } from 'ol';
 import { Geometry, Point } from 'ol/geom';
 import { transform } from 'ol/proj';
-import { FeatureStation, Station } from '../model/station';
+import { FeatureStation, FeatureStationSet, Station } from '../model/station';
 
 export const stationsToFeatures = (stations: Station[]) => {
-  const features: FeatureStation[] = []
+  const featuresSet: FeatureStationSet = {
+    k: [],
+    s: [],
+    pp: []
+  }
 
   stations.forEach(s => {
     const feature = new Feature<Geometry>({
@@ -21,8 +25,20 @@ export const stationsToFeatures = (stations: Station[]) => {
       type: s.type
     });
 
-    features.push(feature)
+    switch (s.type) {
+      case 'k':
+        featuresSet.k.push(feature)
+        break
+      case 'pp':
+        featuresSet.pp.push(feature)
+        break
+      case 's':
+        featuresSet.s.push(feature)
+        break
+      default:
+        console.error(`Unknown station type: ${s.type}`)
+    }
   });
 
-  return features
+  return featuresSet
 }

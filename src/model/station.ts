@@ -13,10 +13,10 @@ export interface Point {
   type: 'Point'
 }
 
-export interface StationFeatureAttrs {
-  code: string
-  name: string
-  type: 'k' | 's' | 'pp'
+export interface FeatureStationSet {
+  k: FeatureStation[],
+  s: FeatureStation[],
+  pp: FeatureStation[]
 }
 
 export interface FeatureStation extends Feature<Geometry> {

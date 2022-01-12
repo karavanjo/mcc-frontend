@@ -44,7 +44,6 @@ const STYLES = {
   }),
 }
 
-
 export const getStationStyle: (feature: Feature<Geometry> | RenderFeature, resolution: number) => Style =
   (feature: Feature<Geometry> | RenderFeature) => {
     if ((feature as FeatureStation).type == 'k') {
@@ -56,3 +55,14 @@ export const getStationStyle: (feature: Feature<Geometry> | RenderFeature, resol
     }
     return new Style()
   }
+
+export const getLayerZIndex = (key: string) => {
+  if (key == 'k') {
+    return 10
+  } else if (key == 's') {
+    return 9
+  } else if (key == 'pp') {
+    return 8
+  }
+  return 8
+}

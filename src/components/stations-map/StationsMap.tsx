@@ -1,8 +1,8 @@
 import React from 'react';
 import Map from 'ol/Map'
 
-import { FeatureStation, Station } from '../../model/station';
-import { getStationStyle } from '../../utils/getStationStyle';
+import { FeatureStation, FeatureStationSet, Station } from '../../model/station';
+import { getLayerZIndex, getStationStyle } from '../../utils/getStationStyle';
 import { stationsToFeatures } from '../../utils/stationsToFeatures';
 
 import OlMap from '../ol-map';
@@ -14,9 +14,10 @@ interface StationsMapProps {
   onClickFeatures?: (feature: FeatureStation[]) => void
 }
 
+
 class StationsMap extends React.Component<StationsMapProps> {
   map: Map | undefined
-  stationsLayer: VectorLayer<any> | undefined
+  stationsLayer = false
 
   constructor(props: StationsMapProps) {
     super(props);
@@ -34,20 +35,23 @@ class StationsMap extends React.Component<StationsMapProps> {
     }
 
     const map = this.map;
-    const features = stationsToFeatures(this.props.stations)
+    const featuresSet: FeatureStationSet = stationsToFeatures(this.props.stations)
 
-    const stationsLayer = new VectorLayer({
-      source: new VectorSource({
-        features
-      }),
-      style: getStationStyle
-    })
+    let k: keyof typeof featuresSet;  // Type is "one" | "two" | "three"
+    for (k in featuresSet) {
+      const features = featuresSet[k];
 
-    map.addLayer(stationsLayer)
+      const stationsLayer = new VectorLayer({
+        source: new VectorSource({
+          features
+        }),
+        style: getStationStyle
+      })
+      stationsLayer.setZIndex(getLayerZIndex(k))
+      map.addLayer(stationsLayer)
+    }
 
-    map.getView().fit(stationsLayer.getSource().getExtent(), {
-      padding: [50, 50, 50, 50]
-    })
+    this.stationsLayer = true
 
     map.on('pointermove', e => {
       const pixel = map.getEventPixel(e.originalEvent)
@@ -66,8 +70,6 @@ class StationsMap extends React.Component<StationsMapProps> {
 
       onClickFeatures(features);
     })
-
-    this.stationsLayer = stationsLayer;
   }
 
   onMapCreate(map: Map) {

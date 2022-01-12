@@ -4,7 +4,8 @@ import Map from 'ol/Map'
 import View from 'ol/View'
 import OSM from 'ol/source/OSM'
 import TileLayer from 'ol/layer/Tile'
-import { transform } from 'ol/proj'
+import { transform, transformExtent } from 'ol/proj'
+import { defaults as defaultControls } from 'ol/control';
 
 import './OlMap.css'
 
@@ -26,9 +27,11 @@ function OlMap(props: OlMapProps) {
       view: new View({
         projection: 'EPSG:3857',
         center: transform([19.105, 52.107], 'EPSG:4326', 'EPSG:3857'),
-        zoom: 6
+        zoom: 6,
+        extent: transformExtent([12.51284, 48.31270, 27.18045, 56.36571],
+          'EPSG:4326', 'EPSG:3857'),
       }),
-      controls: []
+      controls: defaultControls()
     })
 
     if (props.onMapCreate) {

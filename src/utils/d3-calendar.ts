@@ -65,7 +65,7 @@ export default function D3Calendar<T>(data: T[], {
   .attr('viewBox', [0, 0, width, height * years.length])
   .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
   .attr('font-family', 'sans-serif')
-  .attr('font-size', 15);
+  .attr('font-size', '15px');
 
   const year = svg.selectAll('g')
   .data(years)
