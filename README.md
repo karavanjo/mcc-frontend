@@ -7,8 +7,9 @@ The application requires a climate database created by [mcc-import](https://gith
 ## Run
 
 1. Fill `.env` file with your Realm data.
-2. `npm run dev`
-3. Open your browser (http://localhost:3000/)
+2. `npm install`
+3. `npm run dev`
+4. Open your browser (http://localhost:3000/)
 
 ## Screenshots
 
