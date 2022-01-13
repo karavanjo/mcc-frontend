@@ -1,7 +1,7 @@
 import React, { ReactChild, ReactChildren, useContext, useEffect, useState } from 'react'
 import { useRealmApp } from './realm'
 
-interface MongoDBContextInterface {
+export interface MongoDBContextInterface {
   db: Realm.Services.MongoDBDatabase | null
 }
 
