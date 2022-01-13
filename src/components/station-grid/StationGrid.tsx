@@ -11,7 +11,7 @@ import { Observation } from '../../model/obervation'
 
 import D3Calendar from '../../utils/d3-calendar'
 
-import './StationGrid.css'
+import './StationGrid.scss'
 
 
 interface StationModalProps {
@@ -29,7 +29,8 @@ function StationGrid(props: StationModalProps) {
   const componentMounted = useRef(true)
   const { db } = useMongoDB()
 
-  const svg = useRef<HTMLDivElement>(null)
+  const wrapperLegendRef = useRef<HTMLDivElement>(null)
+  const wrapperCalendarRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     return () => {
@@ -39,7 +40,8 @@ function StationGrid(props: StationModalProps) {
 
   useEffect(() => {
     if (observations.length == 0) return
-    if (!svg || !svg.current) return
+    if (!wrapperLegendRef || !wrapperLegendRef.current) return
+    if (!wrapperCalendarRef || !wrapperCalendarRef.current) return
 
     // @ts-ignore
     const svgCalendar = D3Calendar<Observation>(observations, {
@@ -47,20 +49,18 @@ function StationGrid(props: StationModalProps) {
       x: d => d.ts,
       // @ts-ignore
       y: d => d.tavg,
-      cellSize: svg.current.clientWidth / 60,
-      width: svg.current.clientWidth - 100
+      cellSize: wrapperCalendarRef.current.clientWidth / 60,
+      width: wrapperCalendarRef.current.clientWidth - 100
     })
+    wrapperCalendarRef.current.appendChild(svgCalendar)
 
     // @ts-ignore
     const legend: SVGSVGElement = Legend(svgCalendar.scales.color, {
       title: 'Daily average temperature',
       tickFormat: '.0f',
     })
+    wrapperLegendRef.current.appendChild(legend)
 
-    if (svg.current) {
-      svg.current.appendChild(legend)
-      svg.current.appendChild(svgCalendar)
-    }
 
     window.addEventListener('resize', function (e) {
       console.log(e.detail)
@@ -92,7 +92,12 @@ function StationGrid(props: StationModalProps) {
   if (observations.length == 0) {
     result = loading
   } else {
-    result = <div className="grid" ref={svg}/>
+    result = <div className="grid">
+      <div className="legend" ref={wrapperLegendRef}>
+      </div>
+      <div className="calendar" ref={wrapperCalendarRef}>
+      </div>
+    </div>
   }
 
   return (
