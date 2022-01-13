@@ -32,7 +32,7 @@ export default function D3Calendar<T>(data: T[], {
   // Compute a color scale. This assumes a diverging color scheme where the pivot
   // is zero, and we want symmetric difference around zero.
   const max = d3.quantile(Y, 0.9975, Math.abs);
-  const color = d3.scaleSequential([-max, +max], colors).unknown('none');
+  const color = d3.scaleSequential([d3.min(Y), d3.max(Y)], colors).unknown('none');
 
   // Construct formats.
   formatMonth = d3.utcFormat(formatMonth);

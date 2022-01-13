@@ -106,6 +106,9 @@ function StationGrid(props: StationGridProps) {
     if (!wrapperLegendRef || !wrapperLegendRef.current) return
     if (!wrapperCalendarRef || !wrapperCalendarRef.current) return
 
+    const indicatorInfo: Indicator | undefined = indicators.find(i => i.key == indicatorKey)
+    if (!indicatorInfo) return
+
     // @ts-ignore
     const svgCalendar = D3Calendar<Observation>(observations, {
       // @ts-ignore
@@ -113,14 +116,15 @@ function StationGrid(props: StationGridProps) {
       // @ts-ignore
       y: d => d[indicatorKey],
       cellSize: wrapperCalendarRef.current.clientWidth / 60,
-      width: wrapperCalendarRef.current.clientWidth - 100
+      width: wrapperCalendarRef.current.clientWidth - 100,
+      colors: indicatorInfo.colorsScheme
     })
     wrapperCalendarRef.current.innerHTML = ''
     wrapperCalendarRef.current.appendChild(svgCalendar)
 
     // @ts-ignore
     const legend: SVGSVGElement = Legend(svgCalendar.scales.color, {
-      title: indicators.find(i => i.key == indicatorKey)?.name,
+      title: indicatorInfo.name,
       tickFormat: '.0f',
     })
     wrapperLegendRef.current.innerHTML = ''
