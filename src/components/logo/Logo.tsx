@@ -28,13 +28,24 @@ function Logo() {
             My city's climate
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Free online viewer for historical weather data
+            Historical weather data viewer for polish cities
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            The application uses <a href="https://danepubliczne.imgw.pl/">Dane publiczne IMGW-PIB</a>
+            The application uses <a href="https://danepubliczne.imgw.pl/"
+                                    target="_blank"
+                                    title="Dane publiczne IMGW-PIB">
+            Dane publiczne IMGW-PIB</a>
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            Source code - <a href="https://github.com/karavanjo/mcc-frontend" title="karavanjo/mcc-frontend">github</a>
+            Source code - <a href="https://github.com/karavanjo/mcc-frontend"
+                             target="_blank"
+                             title="karavanjo/mcc-frontend">
+            GitHub repo</a>
+          </Typography>
+          <Typography sx={{ mt: 2 }}>
+            Article on <a href="https://dev.to/karavanjo/my-citys-climate-historical-weather-data-viewer-1mcm"
+                          target="_blank"
+                          title="My city's climate - historical weather data viewer">DEV Community</a>
           </Typography>
           <Typography align={'right'} sx={{ mt: 2 }}>
             <Button onClick={handleClose} variant="outlined">Close</Button>
